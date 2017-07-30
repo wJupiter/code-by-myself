@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">	
+<mapper namespace="com.xupt.ttms.dao.StdioDao">
+	
+	<!-- 结果映射  -->
+	<resultMap type="StdioInfo" id="rm1">
+		<id column="stdio_id" property="stdioId"/>
+		<result column="stdio_name" property="stdioName"/>
+		<result column="stdio_rows" property="stdioRows"/>
+		<result column="stdio_cols" property="stdioCols"/>
+		<result column="stdio_type" property="stdioType"/>
+		<result column="stdio_desc" property="stdioDesc"/>
+	</resultMap>
+	
+	<!--添加演出厅  -->
+	<insert id="addStdio" parameterType="StdioInfo" useGeneratedKeys="true" keyProperty="#{stdioId}">
+		INSERT INTO stdio (stdio_id, stdio_name, stdio_rows, stdio_cols, stdio_type, stdio_desc)
+		VALUES (#{stdioId},
+				#{stdioName, jdbcType=VARCHAR},
+				#{stdioRows, jdbcType=INTEGER},
+				#{stdioCols, jdbcType=INTEGER},
+				#{stdioType, jdbcType=VARCHAR},
+				#{stdioDesc, jdbcType=VARCHAR})
+	</insert>
+	
+	<!-- 获取演出厅列表 -->
+	<select id="getStdioList" parameterType="StdioInfo" resultMap="rm1">
+		SELECT * FROM stdio WHERE stdio_status = 0;  
+	</select>
+	
+	<!-- 根据id查询演出厅 -->
+	<select id="getStdioInfoById" parameterType="int" resultMap="rm1">
+		SELECT * FROM stdio WHERE stdio_status = 0 AND stdio_id = #{stdioId};
+	</select>
+	
+	<!-- 修改演出厅 -->
+	<update id="updateStdio" parameterType="StdioInfo">
+		UPDATE stdio SET stdio_name=#{stdioName},
+						 stdio_rows=#{stdioRows},
+						 stdio_cols=#{stdioCols},
+						 stdio_type=#{stdioType},
+						 stdio_desc=#{stdioDesc}	
+		WHERE stdio_status = 0 AND stdio_id = #{stdioId};
+	</update>
+	
+	<!-- 删除演出厅 -->
+	<update id="deleteStdio" parameterType="int">
+		UPDATE stdio SET stdio_status = 1 
+		WHERE stdio_id=#{stdId}
+	</update>
+</mapper>

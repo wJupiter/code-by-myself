@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xupt.ttms.dao.EmployeeDao">
+	
+	<!-- 结果映射 -->
+	<resultMap type="EmployeeInfo" id="rm1">
+		<id column="emp_id" property="empId"/>
+		<result column="emp_no" property="empNo"/>
+		<result column="emp_pwd" property="empPwd"/>
+		<result column="emp_name" property="empName"/>
+		<result column="emp_position" property="empPosition"/>
+		<result column="emp_sex" property="sex"/>
+		<result column="emp_dob" property="dob"/>
+		<result column="emp_age" property="age"/>
+		<result column="emp_tel" property="empTel"/>
+		<result column="emp_email" property="empEmail"/>
+		<result column="emp_addr" property="empAddress"/>
+		<result column="emp_photo" property="empPhoto"/>
+	</resultMap>
+	
+	<!-- 查询所有员工信息 -->
+	<select id="getEmployeeList" resultMap="rm1">
+		SELECT e.*
+		FROM employee e WHERE emp_status = 0;
+	</select>
+	
+	<!-- 根据员工编号查询员工信息 -->
+	<select id="getInfoById" parameterType="int" resultMap="rm1">
+		SELECT e.* FROM employee e
+		WHERE emp_id=#{empId} AND emp_status = 0 
+	</select>
+	
+	<!-- 插入员工信息  -->
+	<insert id="saveInfo" parameterType="EmployeeInfo" useGeneratedKeys="true" keyProperty="empId">
+		INSERT INTO employee(emp_id,emp_no,emp_name,emp_position,emp_sex,emp_dob,emp_age,emp_tel,emp_email,emp_addr,emp_photo)
+		VALUES(#{empId},
+			   #{empNo,jdbcType=VARCHAR},
+			   #{empName,jdbcType=VARCHAR},
+			   #{empPosition,jdbcType=VARCHAR},
+			   #{sex,jdbcType=VARCHAR},
+			   #{dob,jdbcType=DATE},
+			   #{age,jdbcType=INTEGER},
+			   #{empTel,jdbcType=VARCHAR},
+			   #{empEmail,jdbcType=VARCHAR},
+			   #{empAddress,jdbcType=VARCHAR},
+			   #{empPhoto,jdbcType=VARCHAR})
+	</insert>
+	
+	<!-- 动态条件修改信息 -->
+	<update id="updateInfo" parameterType="EmpLoyeeInfo">
+		UPDATE employee 
+			<set>
+				<if test="empNo != null and empNo != ''">emp_no=#{empNo},</if>
+				<if test="empPwd != null and empPwd != ''">emp_pwd=#{empPwd},</if>
+				<if test="empName != null and empName != ''">emp_name=#{empName},</if>
+				<if test="empPosition != null and empPosition !=''">emp_position=#{empPosition},</if>
+				<if test="sex != null and sex != ''">emp_sex=#{sex},</if>
+				<if test="dob != null and dob != ''">emp_dob=#{dob},</if>
+				<if test="age != null and dob != ''">emp_age=#{age},</if>
+				<if test="empTel != null and empTel !='' ">emp_tel=#{empTel},</if>	
+				<if test="empEmail != null and empEmail !='' ">emp_email=#{empEmail},</if>
+				<if test="empAddress != null and empAddress !='' ">emp_addr=#{empAddress},</if>
+				<if test="empPhoto != null and empPhoto != '' ">emp_photo=#{empPhoto}</if>
+			</set>	
+		WHERE emp_id=#{empId}
+	</update>
+	
+	<update id="updateInfo1" parameterType="EmpLoyeeInfo">
+		UPDATE employee SET emp_no=#{empNo},
+							emp_name=#{empName},
+							emp_tel=#{empTel},
+							emp_email=#{empEmail},
+							emp_addr=#{empAddress}
+		WHERE emp_id=#{empId}
+	</update>
+	
+	<!-- 批量删除员工信息 -->
+	<delete id="batchDelete" parameterType="list">
+		UPDATE employee SET emp_status = 1 WHERE emp_id IN
+		<foreach collection="list" close=")" open="(" item="empId" separator=",">
+			#{empId}
+		</foreach>
+	</delete>
+	
+	<!-- 删除员工信息 -->
+	<update id="deleteEmp" parameterType="int">
+		UPDATE employee SET emp_status=1 WHERE emp_id=#{empId}
+	</update>
+	<!-- 分页检索 -->
+	<select id="search" parameterType="map" resultMap="rm1">
+		SELECT e.*
+		FROM employee e 
+		WHERE emp_status = 0 
+		<if test="empName != null"> and emp_name like concat('%',#{empName},'%')</if>
+		<if test="empPosition != null"> and emp_position like concat('%',#{empPosition},'%')</if>
+		LIMIT #{startRowNum}, #{PageSize}
+	</select>
+	
+	<!-- 获取员工的数量 -->
+	<select id="getPageCount" parameterType="map" resultType="int">
+		SELECT count(*) 
+		FROM employee e 
+		WHERE emp_status = 0 
+		<if test="empName != null"> and emp_name like concat('%',#{empName},'%')</if>
+		<if test="empPosition != null"> and emp_position like concat('%',#{empPosition},'%')</if>
+	</select>
+	
+	<!-- 初始化员工头像 -->
+	<update id="savefileName" parameterType="string">
+		UPDATE employee SET emp_photo = #{fileName}  
+	</update>
+		
+</mapper>	
+	

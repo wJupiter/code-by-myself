@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="com.xupt.ttms.dao.TicketDao">
+	
+	<resultMap type="TicketInfo" id="rm1">
+		<!-- <id column="ticket_id" property="ticketId"/> -->
+	<!-- 	<result column="sched_id" property="scheId"/> -->
+		<result column="seat_row" property="seatRow"/>
+		<result column="seat_Col" property="seatCol"/>
+	<!-- 	<result column="ticket_price" property="ticketPrice"/> -->
+		<result column="ticket_status" property="ticketStatus"/>
+	<!-- 	<association property="sechduleInfo" javaType="ScheduleInfo">
+			<id column="sched_id" property="scheId"/>
+		</association> -->
+	</resultMap>
+	
+	<resultMap type="SaleInfo" id="rm2">
+		
+	</resultMap>
+	
+	<!-- 创建订单  -->
+	<insert id="createSale" parameterType="saleInfo" useGeneratedKeys="true" keyProperty="saleId">
+		INSERT INTO sale(sale_id, emp_id, price_sum, sale_time, sale_status)
+		VALUES(#{saleId},
+			   #{empId, jdbcType=INTEGER},
+			   #{priceSum, jdbcType=FLOAT},
+			   NOW(),
+			   1)
+	</insert>
+	
+	<!-- 批量生成票 -->
+	<insert id="createTicket" parameterType="list" useGeneratedKeys="false" keyProperty="ticketId">
+		INSERT INTO ticket(ticket_id, sched_id, seat_row, seat_col, ticket_price, sale_id, ticket_status)
+		VALUES
+		<foreach collection="list" item="ticketInfo" index="index" separator=",">
+			 (	
+			 	#{ticketInfo.ticketId},
+			   	#{ticketInfo.scheId, jdbcType=INTEGER},
+			   	#{ticketInfo.seatRow, jdbcType=INTEGER},
+			   	#{ticketInfo.seatCol, jdbcType=INTEGER},
+			   	#{ticketInfo.ticketPrice, jdbcType=FLOAT},
+			   	#{ticketInfo.saleId, jdbcType=INTEGER},
+			   	1)	
+		</foreach>
+	</insert>	
+	
+	<!-- 查询售票情况 -->
+	<select id="searchTicket" parameterType="int" resultMap="rm1">
+		SELECT 	DISTINCT 
+				t.seat_row,
+				t.seat_col,
+				t.ticket_status
+		FROM ticket t
+		WHERE t.sched_id = #{scheId} AND t.ticket_status = 1
+	</select>
+	
+	<!-- 退票 -->
+	<update id="backTicket" parameterType="int">
+		UPDATE ticket SET ticket_status = 0 
+		WHERE ticket_status = 1 
+		AND sale_id = #{sale_id}			
+	</update>
+	
+	<!-- 退票 -->
+	<update id="backSale" parameterType="int">
+		UPDATE sale SET sale_status = 0 
+		WHERE sale_id = #{sale_id}			
+	</update>
+	
+	<!-- 订单查询 -->
+	<select id="searchSale" parameterType="int" resultMap="rm2">
+		SELECT * FROM   
+	</select>
+	
+</mapper>	

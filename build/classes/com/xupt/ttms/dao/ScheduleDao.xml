@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="com.xupt.ttms.dao.ScheduleDao">
+	
+	<resultMap type="ScheduleInfo" id="rm1">
+		<id column="sched_id" property="scheId"/>
+		<result column="stdio_id" property="stdioId"/>
+		<result column="play_id" property="playId"/>
+		<result column="sched_start_time" property="scheStartTime"/>
+		<result column="sched_end_time" property="scheEndTime"/>
+		<association property="stdioInfo" javaType="StdioInfo">
+			<id column="stdio_id" property="stdioId"/>
+			<result column="stdio_name" property="stdioName"/>
+		</association>	
+		<association property="playInfo" javaType="PlayInfo">
+			<id column="play_id" property="playId"/>
+			<result column="play_name" property="playName"/>
+			<result column="play_image" property="playImage"/>
+			<result column="play_ticket_price" property="playTicketPrice"/>
+		</association>	
+	</resultMap>
+	
+	<!-- 添加演出计划 -->
+	<insert id="addSchedule" parameterType="ScheduleInfo" useGeneratedKeys="true" keyProperty="scheId">
+		INSERT INTO schedule(stdio_id, play_id, sched_start_time, sched_end_time) 
+		VALUES(
+			   #{stdioId, jdbcType=INTEGER},
+			   #{playId, jdbcType=INTEGER},
+			   #{scheStartTime, jdbcType=VARCHAR},
+			   #{scheEndTime, jdbcType=VARCHAR})
+	</insert>
+	
+	<sql id="sql1">
+		SELECT 	sd.sched_id, 
+				sd.stdio_id,
+				st.stdio_name,	
+				sd.play_id, 
+				p.play_name,
+				p.play_image,
+				p.play_ticket_price, 
+				sd.sched_start_time,
+				sd.sched_end_time,
+				sd.sched_status
+		FROM 
+			(SCHEDULE sd INNER JOIN stdio st ON sd.stdio_id = st.stdio_id)
+			INNER JOIN play p ON sd.play_id = p.play_id
+		WHERE sd.sched_status = 0
+	</sql>
+	
+	<!-- 获取演出计划列表 ,进行关联查询 -->
+	<select id="getScheduleList" resultMap="rm1">
+		<include refid="sql1"/>
+	</select>
+	
+	<!-- 根据演出计划编号获取演出计划 -->
+	<select id="getScheduleById" resultMap="rm1" parameterType="int">
+		<include refid="sql1"/>
+		AND sd.sched_id = #{scheId}
+	</select>
+	
+	<!-- 修改演出计划 -->
+	<update id="updateSchedule" parameterType="ScheduleInfo">
+		UPDATE schedule SET stdio_id = #{stdioId},
+							play_id = #{playId},
+							sched_start_time = #{scheStartTime},
+							sched_end_time = #{scheEndTime}
+		WHERE sched_id=#{scheId}					  
+	</update>
+	
+	<!-- 删除演出计划 -->
+	<delete id="deleteSchedule" parameterType="int">
+		UPDATE schedule SET sched_status = 1
+		WHERE sched_id = #{scheId}
+	</delete>
+	
+	<select id="searchSchedule" parameterType="int" resultMap="rm1">
+		SELECT 	sd.sched_id, 
+				sd.stdio_id,
+				st.stdio_name,	
+				sd.play_id, 
+				p.play_name,
+				p.play_image, 
+				p.play_ticket_price,
+				sd.sched_start_time,
+				sd.sched_end_time,
+				sd.sched_status
+		FROM 
+			(SCHEDULE sd INNER JOIN stdio st ON sd.stdio_id = st.stdio_id)
+			INNER JOIN play p ON sd.play_id = p.play_id
+		WHERE sd.sched_status = 0 AND sd.play_id = #{playId}
+	</select>
+	
+	<select id="searchSchedule2" parameterType="int" resultMap="rm1">
+		SELECT 	sd.sched_id, 
+				sd.stdio_id,
+				st.stdio_name,	
+				sd.play_id, 
+				p.play_name,
+				p.play_image, 
+				p.play_ticket_price,
+				sd.sched_start_time,
+				sd.sched_end_time,
+				sd.sched_status
+		FROM 
+			(SCHEDULE sd INNER JOIN stdio st ON sd.stdio_id = st.stdio_id)
+			INNER JOIN play p ON sd.play_id = p.play_id
+		WHERE sd.sched_status = 0
+	</select>
+	
+</mapper>

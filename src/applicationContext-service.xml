@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd">
+	
+	<bean id="userService" class="com.xupt.ttms.service.UserServiceImpl" scope="singleton"></bean>
+	<bean id="empService" class="com.xupt.ttms.service.EmployeeServiceImpl" scope="singleton"></bean>
+	<bean id="stdService" class="com.xupt.ttms.service.StdioServiceImpl" scope="singleton"></bean>
+	<bean id="playService" class="com.xupt.ttms.service.PlayServiceImpl" scope="singleton"></bean>
+	<bean id="scheService" class="com.xupt.ttms.service.ScheduleServiceImpl" scope="singleton"></bean>
+	<bean id="seatService" class="com.xupt.ttms.service.SeatServiceImpl" scope="singleton"></bean>
+	<bean id="ticketService" class="com.xupt.ttms.service.TicketServiceImpl" scope="singleton"></bean>
+	<bean id="saleService" class="com.xupt.ttms.service.SaleServiceImpl" scope="singleton"></bean>
+    
+</beans> 

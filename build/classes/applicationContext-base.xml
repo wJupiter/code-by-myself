@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd">
+      
+     <!-- 开启注解扫描  -->    
+	<context:component-scan base-package="com.xupt.ttms"></context:component-scan>
+	
+		<!-- 配置数据源  -->
+	<bean id="ds" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver"></property>
+    	<property name="url" value="jdbc:mysql://localhost:3306/ttms_3"></property>
+    	<property name="username" value="root"></property>
+    	<property name="password" value="123456"></property>
+    	<property name="maxActive" value="20"></property> 
+    	<property name="maxIdle" value="10"></property>
+    	<property name="maxWait" value="5000"></property>
+	</bean>	
+	
+	<!-- 配置SessionFactoty  -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="ds"></property>
+		<property name="typeAliasesPackage" value="com.xupt.ttms.vo"></property>
+		<property name="mapperLocations">
+			<array>
+				<value>classpath:com/xupt/ttms/dao/*Dao.xml</value>
+			</array>
+		</property>
+	</bean>
+	
+	<!-- 实例化Mapper接口 -->
+  <!--  <bean id="userDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"></property>
+    	<property name="mapperInterface" value="com.xupt.ttms.dao.UserDao"></property>
+    </bean> -->
+    
+	<!-- 实例化映射接口 -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+    	<property name="basePackage" value="com.xupt.ttms.dao"></property>
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"></property>
+    </bean>
+	
+	<!-- 配置事务管理器 -->
+ 	<bean id="txMrg" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="ds"></property>
+	</bean>
+	
+	<!-- 配置事务增强 -->
+	<tx:advice id="txAdvice" transaction-manager="txMrg">
+		<tx:attributes>
+			<tx:method name="get*" read-only="true"/>
+			<tx:method name="find*" read-only="true"/>
+			<tx:method name="search*" read-only="true"/>
+			<!-- 将Service层中的方法转换为java运行时异常，就可以进行事务回滚 -->
+			<tx:method name="*" rollback-for="java.lang.Execption" propagation="REQUIRED"/>
+		</tx:attributes>
+	</tx:advice>
+	
+	<!-- 切面配置 -->
+	<aop:config>
+		<!-- 配置切入点表达时 -->
+		<aop:pointcut expression="execution(public * com.xupt.demo.service..*.*(..))" id="pc1"/>
+		<!-- 配置通知器 -->
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="pc1"/>
+	</aop:config>
+	
+</beans>

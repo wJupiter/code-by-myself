@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">	
+<mapper namespace="com.xupt.ttms.dao.PlayDao">
+	
+	<resultMap type="PlayInfo" id="rm1">
+		<id column="play_id" property="playId"/>
+		<result column="play_name" property="playName"/>
+		<result column="play_type" property="playType"/>
+		<result column="play_language" property="playLanguage"/>
+		<result column="play_desc" property="playDesc"/>
+		<result column="play_length" property="playLength"/>
+		<result column="play_image" property="playImage"/>
+		<result column="play_director" property="playDirector"/>
+		<result column="play_actor" property="playActor"/>
+		<result column="play_ticket_price" property="playTicketPrice"/>
+		<result column="play_grade" property="playGrade"/>
+		<result column="play_status" property="playStatus"/>
+	</resultMap>
+
+	<!-- 添加影片 -->
+	<insert id="savePlay" parameterType="PlayInfo" useGeneratedKeys="true" keyProperty="#{playId}">
+		INSERT INTO play(play_id,play_name,play_type,play_language,play_desc,play_length,play_image,play_director,play_actor,play_ticket_price,play_grade)
+		VALUES(#{playId},
+			   #{playName, jdbcType=VARCHAR},	
+			   #{playType, jdbcType=VARCHAR},	
+			   #{playLanguage, jdbcType=VARCHAR},	
+			   #{playDesc, jdbcType=VARCHAR},	
+			   #{playLength, jdbcType=INTEGER},	
+			   #{playImage, jdbcType=VARCHAR},
+			   #{playDirector, jdbcType=VARCHAR},	
+			   #{playActor, jdbcType=VARCHAR},	
+			   #{playTicketPrice, jdbcType=FLOAT},	
+			   #{playGrade, jdbcType=FLOAT}) 
+	</insert>
+	
+	<!-- 修改影片 -->
+	<update id="updatePlay" parameterType="PlayInfo">  
+		UPDATE play SET play_name=#{playName},
+						play_type=#{playType},
+						play_language=#{playLanguage},
+						play_desc=#{playDesc},
+						play_length=#{playLength},
+						play_image=#{playImage},
+						play_director=#{playDirector},
+						play_actor=#{playActor},
+						play_ticket_price=#{playTicketPrice},
+						play_grade=#{playGrade}
+		WHERE play_id = #{playId}				
+	</update>
+		
+	<!-- 初始化影片海报 -->
+	<update id="updateAllImage" parameterType="string">
+		UPDATE play SET play_image = #{imagePath}
+	</update>
+	
+	<!-- 针对单个影片修改海报-->
+	<update id="updatePlayImageById" parameterType="map">
+		UPDATE play SET play_image = #{imagePath} WHERE play_id = #{playId}
+	</update>
+	
+	<!-- 获得所有影片列表 -->
+	<select id="getPlayList" resultMap="rm1">
+		SELECT * FROM play WHERE play_status = 0;
+	</select>
+	
+	<!-- 根据影片编号查询影片信息  -->
+	<select id="getPlayById" parameterType="int" resultMap="rm1">
+		SELECT * FROM play WHERE play_id = #{playId}
+	</select>
+	
+	<!-- 批量删除影片信息  -->
+	<update id="deleteBatch" parameterType="list">
+		UPDATE play SET play_status = 1  WHERE play_id IN
+		<foreach collection="list" open="(" close=")" separator="," index="playId">
+			#{playId}
+		</foreach>
+	</update>
+			
+	<!-- 影片下架 -->
+	<update id="deletePlay" parameterType="int">
+		UPDATE play SET play_status = 1 WHERE play_id = #{playId}
+	</update>	
+	
+	<!-- 分页查询 -->
+	<select id="searchPlayByPage" parameterType="map" resultMap="rm1">
+		SELECT * FROM play 
+		WHERE play_status = 0
+		<if test="playName != null ">AND play_name like concat('%',#{playName},'%') </if>
+		<if test="playType != null ">AND play_type like concat('%',#{playType},'%') </if>
+		<if test="playLanguage != null ">AND play_language like concat('%',#{playLanguage},'%') </if>
+		<if test="lowGrade != null"> <![CDATA[ AND play_grade >= #{lowGrade}]]></if>
+		<if test="highGrade != null"><![CDATA[ AND play_grade <= #{highGrade}]]></if>
+		LIMIT #{startRow}, #{pageSize}
+	</select>
+	
+	<!-- 查询对应条件下影片的总数  -->
+	<select id="getPlayCount" parameterType="map" resultType="int">
+		SELECT COUNT(*) FROM play 
+		WHERE play_status = 0
+		<if test="playName != null ">AND play_name like concat('%',#{playName},'%') </if>
+		<if test="playType != null ">AND play_type like concat('%',#{playType},'%') </if>
+		<if test="playLanguage != null ">AND play_language like concat('%',#{playLanguage},'%') </if>
+		<if test="lowGrade != null"> <![CDATA[ AND play_grade >= #{lowGrade}]]></if>
+		<if test="highGrade != null"><![CDATA[ AND play_grade <= #{highGrade}]]></if>
+	</select>
+	
+</mapper>

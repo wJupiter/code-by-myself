@@ -1,0 +1,167 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>关于</title>
+
+    <link href="/ttms_ssm/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/ttms_ssm/css/about.css" rel="stylesheet">
+    <link rel="stylesheet" href="/ttms_ssm/css/footer.css">
+    <script>
+        function message() {
+            alert("系统出现问题请致电：47383-439");
+        }
+    </script>
+</head>
+
+<body>
+
+<div class="header-top">
+    <nav class="navbar navbar-inverse navbar-fixed-top navbar-static " id="navbar-example" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                        data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/ttms_ssm/sche/searchSchedule2">永乐票务</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="/ttms_ssm/sche/searchSchedule2#menu1">正在上映 </a></li>
+                    <li><a href="/ttms_ssm/sche/searchSchedule2#menu1">即将上映</a></li>
+                    <li><a href="/ttms_ssm/sche/searchSchedule2#menu3">今日票房</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="active"><a href="/ttms_ssm/emp/getSaleInfoById/${sessionScope.empId}">个人中心</a></li>
+                    <li><a href="#">关于</a></li>
+                    <li><a href="javascript:void(0);" onclick="message()">帮助</a></li>
+                </ul>
+            </div><!-- /.navbar-collapse -->
+        </div><!-- /.container-fluid -->
+    </nav>
+</div>
+
+<div class="container">
+
+    <div class="blog-header">
+        <small class="title">新视界,新天地,心享受</small>
+    </div>
+    <br>
+    <div class="row">
+
+        <div class="col-sm-8 blog-main">
+
+            <div class="blog-post">
+                <h2>基本信息</h2>
+                <hr>
+                <p>地址：广东深圳宝安区 观澜镇观光路万悦城广场4楼（富士康南门）</p>
+                <p>电话：0755-88370290 / 0755-88370291</p>
+                <p>网站：http://www.allice.com/</p>
+                <p>乘车：富士康南门站：787/M356/M337/M226/M286/M213/B649/高峰47路 images, and code are all supported.</p>
+                <br>
+                <h2>设施和服务</h2>
+                <hr>
+                <p>营业时间：10:00-24:00</p>
+                <p> 影厅介绍：影院拥有影厅7个</p>
+                <p> 放映设备：支持胶片 / 数字 / 3D放映</p>
+                <br>
+                <h3>详细介绍</h3>
+                <p>深圳金逸电影城（观澜店）简介.</p>
+                <ul>
+                    <li>观澜地区唯一一家豪华五星级电影城</li>
+                    <br>
+                    <p>深圳金逸电影城观澜店是广州金逸影视传媒股份有限公司在深圳成立的第三家国际影城。影城的建立标志着金逸在观澜地区翻开了电影行业崭新的一页，
+                        更在观澜地区标志了一个新的娱乐地标，并向深圳东北面延展，将会给观众带来展示电影梦工厂的又一大魅力。 </p>
+                    <li>多厅多片 循环播放</li>
+                    <br>
+                    <p>深圳金逸电影城观澜店位于观澜黄金商圈的标志性项目——万悦城商业广场4楼，占地2500多平方，拥有7个全数字豪华放映影厅，其中4个3D厅，
+                        共706个座位，多厅多片，循环播放，能够满足多层次不同欣赏品位观众的需求。 </p>
+                    <li>豪华设施 震撼视听感受</li>
+                    <br>
+                    <p>深圳金逸电影城观澜店装修豪华，设计新颖。影城内部格局大方，提供咨询、售票、饮食、休息等服务。影厅内空间宽敞，座椅根据人体工程学设计，
+                        排列及距宽均经科学测量，保证任意位置都享有无比舒适观影体验。影城放映厅汇集了当今国际最顶尖的数字影音播放设备，包括日本NEC放映机、
+                        GDC服务器和800D解码器，德国高清晰放映镜头，顶级全新JBL影院专用音箱，杜比数字环绕立体声，视听效果达到国际一流标准。 </p>
+                    <li>五星服务 不一样的五星享受</li>
+                    <br>
+                    <p>深圳金逸电影城观澜店拥有年轻又充满活力的管理服务团队，秉承“五星级服务”的理念，给每位观众带来细心、耐心、贴心的服务，
+                        让你感受影城五星服务的独特魅力。同时，影城也为您提供可口的电影食品——爆米花，其国外进口的制作设备和配以美国爆米花专用玉米，正宗的焦糖，
+                        制作出味道松脆的爆米花，给你的观影带来不一样的享受，真正体验无与伦比的电影之旅</p>
+                    <p>深圳金逸电影城观澜店以五星级的设计概念、顶尖科技的影片放映技术、高端的环声系统及优质的客户服务，秉持及传播“科技缔造视听新感觉”
+                        和“展现电影魅力，传播电影文化”的经营理念，真诚期待您的光临！
+                        交通提示：乘M337/M787至观澜富士康南门下 </p>
+                </ul>
+            </div><!-- /.blog-post -->
+
+            <nav>
+                <ul class="pager">
+                    <li><a href="#">上一页</a></li>
+                    <li><a href="#">下一页</a></li>
+                </ul>
+            </nav>
+
+        </div><!-- /.blog-main -->
+
+        <div class="col-sm-3 col-sm-offset-1 blog-sidebar">
+            <div class="sidebar-module sidebar-module-inset">
+                <h4>宗旨</h4>
+                <p>每一次的改变,只为给你更好的体验.</p>
+            </div>
+            <div class="sidebar-module">
+                <h4>影院活动</h4>
+                <ol class="list-unstyled">
+                    <li><a href="#">March 2014</a></li>
+                    <li><a href="#">February 2014</a></li>
+                    <li><a href="#">January 2014</a></li>
+                    <li><a href="#">December 2013</a></li>
+                    <li><a href="#">November 2013</a></li>
+                    <li><a href="#">October 2013</a></li>
+                    <li><a href="#">September 2013</a></li>
+                    <li><a href="#">August 2013</a></li>
+                    <li><a href="#">July 2013</a></li>
+                    <li><a href="#">June 2013</a></li>
+                    <li><a href="#">May 2013</a></li>
+                    <li><a href="#">April 2013</a></li>
+                </ol>
+            </div>
+            <div class="sidebar-module">
+                <h4>相关地址</h4>
+                <ol class="list-unstyled">
+                    <li><a href="http://weibo.com/petaasia?gclid=CMSN5M73wMwCFQukvQodLmkH8g&is_hot=1">Sina Weibo</a>
+                    </li>
+                    <li><a href="#">Twitter</a></li>
+                    <li><a href="#">Facebook</a></li>
+                </ol>
+            </div>
+        </div><!-- /.blog-sidebar -->
+
+    </div><!-- /.row -->
+
+</div><!-- /.container -->
+
+<footer class="footer">
+    <p>@2016 永乐票务 yongle.com 京ICP证160733号 京ICP备16022489号-1 京公网安备 11010502030881号 网络文化经营许可证 电子公告服务规则</p>
+    <p>北京永乐文化传媒有限公司</p>
+</footer>
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="../dist/jquery-3.1.1.min.js"></script>
+<script src="../dist/js/bootstrap.min.js"></script>
+<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+<script src="../dist/js/ie10-viewport-bug-workaround.js"></script>
+</body>
+</html>
