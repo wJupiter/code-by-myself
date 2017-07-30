@@ -1,2 +1,4 @@
-# code-by-myself
-This is My first Java Web Project
+ttms_ssm
+项目名：永乐票务
+后台开发者：我自己
+第一次提交git
